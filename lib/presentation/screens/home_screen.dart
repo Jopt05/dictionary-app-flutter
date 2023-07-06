@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dictionary_app/domain/entities/word.dart';
 import 'package:flutter_dictionary_app/presentation/providers/theme_provider.dart';
+import 'package:flutter_dictionary_app/presentation/providers/words/search_provider.dart';
 import 'package:flutter_dictionary_app/presentation/providers/words/words_provider.dart';
-import 'package:flutter_dictionary_app/presentation/screens/widgets/home/meaning_container.dart';
-import 'package:flutter_dictionary_app/presentation/screens/widgets/home/separator.dart';
 import 'package:flutter_dictionary_app/presentation/screens/widgets/home/source_container.dart';
 import 'package:flutter_dictionary_app/presentation/screens/widgets/home/details_container.dart';
 import 'package:flutter_dictionary_app/presentation/screens/widgets/home/word_presentation.dart';
@@ -56,13 +55,13 @@ class Homeview extends ConsumerWidget {
   }
 }
 
-class _Homebody extends StatelessWidget {
+class _Homebody extends ConsumerWidget {
   const _Homebody({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
@@ -70,7 +69,8 @@ class _Homebody extends StatelessWidget {
           children: [
             SearchBox(
               onValue: (value) {
-                print(value);
+                ref.read( searchProvider.notifier ).state = value;
+                ref.read( wordsProvider.notifier ).loadWord(searchParameter: value);
               },
             ),
             
@@ -99,8 +99,7 @@ class _WordviewState extends ConsumerState<_Wordview> {
 
   @override
   void initState() {
-    
-    ref.read( wordsProvider.notifier ).loadWord("man");
+    ref.read( wordsProvider.notifier ).loadWord();
     super.initState();
   }
 
@@ -112,11 +111,13 @@ class _WordviewState extends ConsumerState<_Wordview> {
   @override
   Widget build(BuildContext context) {
 
-    final Word? wordData = ref.watch( wordsProvider )["man"];
+    final String searchTerm = ref.watch( searchProvider );
+    final Word? wordData = ref.watch( wordsProvider )[searchTerm];
+    final bool isLoading = ref.watch( wordsProvider.notifier ).isLoading;
 
     final size = MediaQuery.of(context).size;
 
-    if ( wordData == null) return Center(
+    if ( wordData == null || isLoading ) return Center(
       child: CircularProgressIndicator(),
     );
 
@@ -149,7 +150,7 @@ class _WordviewState extends ConsumerState<_Wordview> {
           height: 30,
         ),
         SourceContainer(
-
+          url: wordData.sourceUrls[0],
         ),
       ],
     );

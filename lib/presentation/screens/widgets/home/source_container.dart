@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class SourceContainer extends StatelessWidget {
-  const SourceContainer({super.key});
+
+  final String url;
+
+  const SourceContainer({super.key, required this.url});
+  
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +28,15 @@ class SourceContainer extends StatelessWidget {
 
           Row(
             children: [
-              Text(
-                'https//:adsadasdas.com/word',
-                style: TextStyle(
-                  color: Colors.grey[850],
-                  fontSize: 20
+              InkWell(
+                onTap: () => url,
+                child: Text(
+                  url,
+                  style: TextStyle(
+                    color: Colors.grey[650],
+                    decoration: TextDecoration.underline,
+                    fontSize: 20
+                  ),
                 ),
               ),
 
