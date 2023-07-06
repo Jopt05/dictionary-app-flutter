@@ -8,10 +8,10 @@ environment:
 
 dependencies:
   dio: ^5.2.1+1
+  audioplayers: ^4.1.0
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.3.6
-  google_fonts: ^5.1.0
 
 dev_dependencies:
   flutter_test:
