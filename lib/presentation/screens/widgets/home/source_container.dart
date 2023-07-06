@@ -26,7 +26,7 @@ class SourceContainer extends StatelessWidget {
             height: 10,
           ),
 
-          Row(
+          Wrap(
             children: [
               InkWell(
                 onTap: () => url,
@@ -35,8 +35,9 @@ class SourceContainer extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.grey[650],
                     decoration: TextDecoration.underline,
-                    fontSize: 20
+                    fontSize: 20,
                   ),
+                  maxLines: 2,
                 ),
               ),
 

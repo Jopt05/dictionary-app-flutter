@@ -39,6 +39,8 @@ class _WordPresentationState extends State<WordPresentation> {
   @override
   Widget build(BuildContext context) {
 
+    if ( widget.phonetics.length == 0 ) return SizedBox();
+
     final Phonetic usedPhonetic = widget.phonetics[0];
 
     return Row(
