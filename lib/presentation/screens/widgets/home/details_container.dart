@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dictionary_app/infrastructure/models/api_response.dart';
+import 'package:flutter_dictionary_app/presentation/providers/words/search_provider.dart';
+import 'package:flutter_dictionary_app/presentation/providers/words/words_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DetailsContainer extends StatelessWidget {
+class DetailsContainer extends ConsumerWidget {
 
   final Meaning meaning;
 
@@ -12,7 +15,7 @@ class DetailsContainer extends StatelessWidget {
   final String placeholder_text = "Alejandro G. Calvo te cuenta qué le ha parecido 'Misión imposible: Sentencia mortal, parte 1' ('Mission: Impossible - Dead Reckoning' Part One), la séptima entrega de la saga Misión Imposible protagonizada por Tom Cruise y Rebecca Ferguson y dirigida por Christopher McQuarrie.";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
     final size = MediaQuery.of(context).size;
 
@@ -134,12 +137,18 @@ class DetailsContainer extends StatelessWidget {
                     (element) {
                       return Wrap(
                           children: [
-                          Text(
-                            element,
-                            style: const TextStyle(
-                              color: Color.fromARGB(255, 169, 78, 185),
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
+                          GestureDetector(
+                            onTap: () {
+                              ref.read( wordsProvider.notifier ).loadWord(searchParameter: element);
+                              ref.read( searchProvider.notifier ).state = element;
+                            },
+                            child: Text(
+                              element,
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 169, 78, 185),
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold
+                              ),
                             ),
                           ),
                           const SizedBox(
